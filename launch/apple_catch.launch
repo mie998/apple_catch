@@ -1,0 +1,15 @@
+<launch>
+  <arg name="map_default" default="$(find apple_catch)/map/simulation_map.yaml"/>
+  <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_default)"/>
+  <node pkg="rviz" type="rviz" name="rviz" />
+  <node pkg="amcl" type="amcl" name="amcl" >
+    <param name="initial_pose_x" value="0.05" />
+    <param name="initial_pose_y" value="-4.09" />
+    <param name="initial_pose_a" value="-3.127" />
+  </node>
+  <!--<node pkg="gmapping" type="slam_gmapping" name="mapping" /> -->
+
+  <node pkg="apple_catch" type="open_door.py" name="open_door" />
+  <node pkg="apple_catch" type="door_status.py" name="door_status" />
+  <node pkg="apple_catch" type="simple_move.py" name="simple_move" />
+</launch>
