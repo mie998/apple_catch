@@ -9,7 +9,7 @@ from sensor_msgs.msg import LaserScan
 from move_base_msgs.msg import MoveBaseAction
 
 
-def get_angle_and_distance_map(curr, next):
+def get_angle_and_distance_in_map(curr, next):
     nx, ny, cx, cy = next.point.x, next.point.y, curr.point.x, curr.point.y
     theta = math.atan2(ny - cy, nx - cx)
     dist = math.sqrt((ny - cy)**2 + (nx - cx)**2)
@@ -17,7 +17,7 @@ def get_angle_and_distance_map(curr, next):
     return theta, dist
 
 
-def get_angle_and_distance_baselink(next):
+def get_angle_and_distance_in_baselink(next):
     nx, ny = next.point.x, next.point.y
     theta = math.atan2(ny, nx)
     dist = math.sqrt(ny**2 + nx**2)
@@ -45,7 +45,7 @@ def add_header(p):
     return ps
 
 
-def map_to_baselink(point_in_map):
+def transform_map_to_baselink(point_in_map):
     listener = tf.TransformListener()
     listener.waitForTransform(
         '/map', '/base_link', rospy.Time(), rospy.Duration(5.0))
@@ -63,7 +63,7 @@ def map_to_baselink(point_in_map):
             continue
 
 
-def baselink_to_map(point_in_baselink):
+def transform_baselink_to_map(point_in_baselink):
     listener = tf.TransformListener()
     listener.waitForTransform(
         '/base_link', '/map', rospy.Time(), rospy.Duration(5.0))
